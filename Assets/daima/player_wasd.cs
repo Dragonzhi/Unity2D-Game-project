@@ -18,8 +18,15 @@ public class player_wasd : MonoBehaviour
     public Transform groundCheck;//地面检测
     public int Weapon_type = 0;//武器类型
     public Text Weapon_type_Num;//武器类型显示
+    private float horizontalMove;//移动
+    [Header("冲刺变量")]
+    public float dashTime;//Dash时间
+    private float dashTimeless;//Dash剩余时间
+    private float dashLast = -10f;//上次Dash的时间点
+    public float dashCD;
+    public float dashSpeed;
 
-    public bool isGround, isJump;
+    public bool isGround, isJump,isDashing;
     bool jumpPressed;
     int jumpCount;
 
@@ -36,12 +43,23 @@ public class player_wasd : MonoBehaviour
         {
             jumpPressed = true;
         }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            if(Time.time >= (dashLast + dashCD))
+            {
+                //可以Dash
+                ReadToDash();
+            }
+        }
     }
     
     void FixedUpdate()
     {
         isGround = Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground);
         Movement();
+        Dash();
+        if (isDashing)
+            return;
         Jump();
         ChangeAnim();
         //ChangeAct();
@@ -52,7 +70,7 @@ public class player_wasd : MonoBehaviour
     void Movement()
     {
         //水平移动判断变量 获取水平移动按键值（-1,0,1）
-        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        horizontalMove = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(horizontalMove * speed, rb.velocity.y);
         //角色移动
         if (horizontalMove != 0)
@@ -107,6 +125,14 @@ public class player_wasd : MonoBehaviour
         {
             animator.SetBool("jumping", false);
             animator.SetBool("falling", true);
+        }
+        if (isDashing)
+        {
+            animator.SetBool("dashing", true);
+        }
+        else if (!isDashing)
+        {
+            animator.SetBool("dashing", false);
         }
     }
 
@@ -165,6 +191,38 @@ public class player_wasd : MonoBehaviour
             Weapon_type_Num.text = Weapon_type.ToString();
         }
     }
-    
+    //冲刺准备
+    void ReadToDash()
+    {
+        isDashing = true;
+        dashTimeless = dashTime;
+        dashLast = Time.time;
+    }
+    //冲刺
+    void Dash()
+    {
+        if(isDashing)
+        {   
+            if(dashTimeless > 0)
+            {   
+                if(rb.velocity.y >0 && !isGround)
+                {
+                    rb.velocity = new Vector2(dashSpeed * horizontalMove, jumpForce/2);
+                }
+                rb.velocity = new Vector2(dashSpeed * horizontalMove,rb.velocity.y);
+                dashTimeless -= Time.deltaTime;
+                shadowPool.instance.GetFromPool();
 
+            }
+            if(dashTimeless <= 0)
+            {
+                isDashing = false;
+                if (!isGround)
+                {
+                    rb.velocity = new Vector2(dashSpeed * horizontalMove, jumpForce/2);
+                }
+
+            }
+        }
+    }
 }   
