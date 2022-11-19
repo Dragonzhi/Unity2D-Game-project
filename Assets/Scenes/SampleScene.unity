@@ -283,6 +283,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19181685}
   m_CullTransparentMesh: 1
+--- !u!1 &55608938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55608939}
+  m_Layer: 0
+  m_Name: "\u5730\u9762\u5224\u5B9A"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &55608939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55608938}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.39, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1670789331222457849}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &83186214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1699,6 +1730,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 3.45
       objectReference: {fileID: 0}
+    - target: {fileID: 896783076241316881, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 896783076241317101, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
       propertyPath: m_Radius
       value: 0.39470232
@@ -1712,9 +1747,21 @@ PrefabInstance:
       value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 896783076241317103, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
-      propertyPath: jumpForce
-      value: 950
+      propertyPath: coll1
+      value: 
+      objectReference: {fileID: 1670789331222457854}
+    - target: {fileID: 896783076241317103, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
+      propertyPath: speed
+      value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 896783076241317103, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
+      propertyPath: jumpForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 896783076241317103, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
+      propertyPath: groundCheck
+      value: 
+      objectReference: {fileID: 55608939}
     - target: {fileID: 896783076241317103, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
       propertyPath: Weapon_type_Num
       value: 
@@ -1763,11 +1810,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3297009640218955490, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
 --- !u!4 &1670789331222457849 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1971966955762134166, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
+  m_PrefabInstance: {fileID: 896783076661936495}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &1670789331222457854 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 896783076241316880, guid: d1fc0870e87fd844b82b5ae6be3ad72d, type: 3}
   m_PrefabInstance: {fileID: 896783076661936495}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6522701213104681348
