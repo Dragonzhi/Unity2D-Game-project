@@ -19,6 +19,10 @@ public class player_wasd : MonoBehaviour
     public int Weapon_type = 0;//武器类型
     public Text Weapon_type_Num;//武器类型显示
     private float horizontalMove;//移动
+
+    [Header("CD的UI组件")]
+    public Image cdImage;//cd图形
+
     [Header("冲刺变量")]
     public float dashTime;//Dash时间
     private float dashTimeless;//Dash剩余时间
@@ -43,7 +47,7 @@ public class player_wasd : MonoBehaviour
         {
             jumpPressed = true;
         }
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetButtonDown("Dash"))
         {
             if(Time.time >= (dashLast + dashCD))
             {
@@ -51,6 +55,7 @@ public class player_wasd : MonoBehaviour
                 ReadToDash();
             }
         }
+        cdImage.fillAmount -= 1.0f / dashCD * Time.deltaTime;
     }
     
     void FixedUpdate()
@@ -197,6 +202,7 @@ public class player_wasd : MonoBehaviour
         isDashing = true;
         dashTimeless = dashTime;
         dashLast = Time.time;
+        cdImage.fillAmount = 1;
     }
     //冲刺
     void Dash()
@@ -207,9 +213,9 @@ public class player_wasd : MonoBehaviour
             {   
                 if(rb.velocity.y >0 && !isGround)
                 {
-                    rb.velocity = new Vector2(dashSpeed * horizontalMove, jumpForce/2);
+                    rb.velocity = new Vector2(-dashSpeed * gameObject.transform.localScale.x, jumpForce/2);
                 }
-                rb.velocity = new Vector2(dashSpeed * horizontalMove,rb.velocity.y);
+                rb.velocity = new Vector2(-dashSpeed * gameObject.transform.localScale.x, rb.velocity.y);
                 dashTimeless -= Time.deltaTime;
                 shadowPool.instance.GetFromPool();
 
@@ -219,7 +225,7 @@ public class player_wasd : MonoBehaviour
                 isDashing = false;
                 if (!isGround)
                 {
-                    rb.velocity = new Vector2(dashSpeed * horizontalMove, jumpForce/2);
+                    rb.velocity = new Vector2(-dashSpeed * gameObject.transform.localScale.x, jumpForce/2);
                 }
 
             }
