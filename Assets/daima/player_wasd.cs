@@ -12,14 +12,17 @@ public class player_wasd : MonoBehaviour
     public Collider2D coll;//碰撞变量
     public Collider2D coll1;//碰撞变量1
     public Collider2D discoll;//可以关闭的碰撞    
-    public float speed;//速度变量
-    public float jumpForce;//跳跃变量
+   
     public Transform CellingCheck;//头顶有没有碰撞？
     public Transform groundCheck;//地面检测
     public int Weapon_type = 0;//武器类型
     public Text Weapon_type_Num;//武器类型显示
     private float horizontalMove;//移动
-
+    [Header("移动的参数")]
+    public float speed;//速度变量
+    public float walkSpeed;//走路速度变量
+    public float runSpeed;//跑步速度变量
+    public float jumpForce;//跳跃变量
     [Header("CD的UI组件")]
     public Image cdImage;//cd图形
 
@@ -29,8 +32,8 @@ public class player_wasd : MonoBehaviour
     private float dashLast = -10f;//上次Dash的时间点
     public float dashCD;
     public float dashSpeed;
-
-    public bool isGround, isJump,isDashing;
+    //[Header("状态显示")]
+    public bool isGround, isJump, isDashing;
     bool jumpPressed;
     int jumpCount;
 
@@ -76,14 +79,26 @@ public class player_wasd : MonoBehaviour
     {
         //水平移动判断变量 获取水平移动按键值（-1,0,1）
         horizontalMove = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = runSpeed;
+        }
+        else
+        {
+            speed = walkSpeed;
+        }
         rb.velocity = new Vector2(horizontalMove * speed, rb.velocity.y);
-        //角色移动
+        //角色走移动
+
+
+        //角色跑步移动
         if (horizontalMove != 0)
         {
             //朝向改变
             transform.localScale = new Vector3(-horizontalMove, 1, 1);
             //animator.SetFloat("running", -horizontalMove);
         }
+        
         /*
         //角色跳跃
         if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
@@ -116,8 +131,10 @@ public class player_wasd : MonoBehaviour
     }
     //动画
     void ChangeAnim()
-    {
+    {   
+        //移动部分
         animator.SetFloat("running", Mathf.Abs(rb.velocity.x));
+        //跳跃部分
         if (isGround)
         {
             animator.SetBool("falling", false);
